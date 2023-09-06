@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "es6": true
+},
   "extends": [
     "next/core-web-vitals",
     "airbnb",
@@ -6,20 +10,21 @@
     "airbnb/hooks",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": [2, { "namedComponents": "arrow-function" }],
     "react/prop-types": ["off"],
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": [
-      "error",
+      "warn",
       {
         "devDependencies": true,
         "optionalDependencies": true,
