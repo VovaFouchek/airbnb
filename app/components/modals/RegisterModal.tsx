@@ -8,6 +8,7 @@ import { AiFillGithub } from 'react-icons/ai';
 
 import useRegisterModal from '@/app/hooks/useRegisterModal';
 import { toast } from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
@@ -65,8 +66,8 @@ const RegisterModal = () => {
   const footerContent = (
     <div className="mt-3 flex flex-col gap-4">
       <hr />
-      <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => { }} />
-      <Button outline label="Continue with GitHub" icon={AiFillGithub} onClick={() => { }} />
+      <Button outline label="Continue with Google" icon={FcGoogle} onClick={() => signIn('google')} />
+      <Button outline label="Continue with GitHub" icon={AiFillGithub} onClick={() => signIn('github')} />
       <div className="mt-4 text-center font-light text-neutral-500">
         <div className="flex flex-row items-center justify-center gap-2">
           <div>Already have an account?</div>
