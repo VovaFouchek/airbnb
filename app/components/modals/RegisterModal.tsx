@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import axios from 'axios';
+import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
+import { signIn } from 'next-auth/react';
+import { toast } from 'react-hot-toast';
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillGithub } from 'react-icons/ai';
 
 import useRegisterModal from '@/app/hooks/useRegisterModal';
-import { toast } from 'react-hot-toast';
-import { signIn } from 'next-auth/react';
+import useLoginModal from '@/app/hooks/useLoginModal';
+
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../inputs/Input';
@@ -16,6 +18,7 @@ import Button from '../Button';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -46,6 +49,11 @@ const RegisterModal = () => {
       });
   };
 
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome to Airbnb" subtitle="Create an account!" />
@@ -71,11 +79,7 @@ const RegisterModal = () => {
       <div className="mt-4 text-center font-light text-neutral-500">
         <div className="flex flex-row items-center justify-center gap-2">
           <div>Already have an account?</div>
-          <button
-            type="button"
-            onClick={registerModal.onClose}
-            className="cursor-pointer text-neutral-800 hover:underline"
-          >
+          <button type="button" onClick={toggle} className="cursor-pointer text-neutral-800 hover:underline">
             Log in
           </button>
         </div>
