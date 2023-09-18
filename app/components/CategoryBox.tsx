@@ -43,9 +43,8 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({ icon: Icon, label, selected }
   }, [label, router, params]);
 
   return (
-    // todo: Add key Event
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
+    <button
+      type="button"
       onClick={handleClick}
       className={`
         flex 
@@ -64,7 +63,7 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({ icon: Icon, label, selected }
     >
       <Icon size={26} />
       <div className="text-sm font-medium">{label}</div>
-    </div>
+    </button>
   );
 };
 
