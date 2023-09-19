@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 
+import dynamic from 'next/dynamic';
 import useRentModal from '@/app/hooks/useRentModal';
 import { FieldValues, useForm } from 'react-hook-form';
 
@@ -9,6 +10,7 @@ import Modal from './Modal';
 import Heading from '../Heading';
 import { categories } from '../navbar/Categories';
 import CategoryBox from '../inputs/CategoryBox';
+import CountrySelect from '../inputs/CountrySelect';
 
 enum STEPS {
   CATEGORY = 0,
@@ -46,6 +48,16 @@ const RentModal = () => {
   });
 
   const category = watch('category');
+  const location = watch('location');
+
+  const Map = useMemo(
+    () =>
+      dynamic(() => import('../Map'), {
+        ssr: false,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [location]
+  );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -79,7 +91,7 @@ const RentModal = () => {
     return 'Back';
   }, [step]);
 
-  const bodyContent = (
+  let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading title="Which of these best describes your place?" subtitle="Pick a category" />
       <div className="grid max-h-[50vh] grid-cols-1 gap-3 overflow-y-auto md:grid-cols-2">
@@ -97,11 +109,21 @@ const RentModal = () => {
     </div>
   );
 
+  if (step === STEPS.LOCATION) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading title="Where is your place located?" subtitle="Help guests find you!" />
+        <CountrySelect value={location} onChange={(value) => setCustomValue('location', value)} />
+        <Map center={location?.latlng} />
+      </div>
+    );
+  }
+
   return (
     <Modal
       isOpen={rentModal.isOpen}
       onClose={rentModal.onClose}
-      onSubmit={rentModal.onClose}
+      onSubmit={onNext}
       actionLabel={actionLabel}
       secondaryActionLabel={secondaryActionLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
