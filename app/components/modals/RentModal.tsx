@@ -11,6 +11,7 @@ import Heading from '../Heading';
 import { categories } from '../navbar/Categories';
 import CategoryBox from '../inputs/CategoryBox';
 import CountrySelect from '../inputs/CountrySelect';
+import Counter from '../inputs/Counter';
 
 enum STEPS {
   CATEGORY = 0,
@@ -49,6 +50,9 @@ const RentModal = () => {
 
   const category = watch('category');
   const location = watch('location');
+  const guestCount = watch('guestCount');
+  const roomCount = watch('roomCount');
+  const bathroomCount = watch('bathroomCount');
 
   const Map = useMemo(
     () =>
@@ -98,7 +102,7 @@ const RentModal = () => {
         {categories.map((item) => (
           <div key={item.label} className="col-span-1">
             <CategoryBox
-              onClick={(category) => setCustomValue('category', category)}
+              onClick={(value) => setCustomValue('category', value)}
               selected={category === item.label}
               label={item.label}
               icon={item.icon}
@@ -115,6 +119,34 @@ const RentModal = () => {
         <Heading title="Where is your place located?" subtitle="Help guests find you!" />
         <CountrySelect value={location} onChange={(value) => setCustomValue('location', value)} />
         <Map center={location?.latlng} />
+      </div>
+    );
+  }
+
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading title="Share some basics about your place" subtitle="What amenities do you have?" />
+        <Counter
+          title="Guests"
+          subtitle="How many guests do you allow?"
+          value={guestCount}
+          onChange={(value) => setCustomValue('guestCount', value)}
+        />
+        <hr />
+        <Counter
+          title="Rooms"
+          subtitle="How many rooms do you have?"
+          value={roomCount}
+          onChange={(value) => setCustomValue('roomCount', value)}
+        />
+        <hr />
+        <Counter
+          title="Bathrooms"
+          subtitle="How many bathrooms do you have?"
+          value={bathroomCount}
+          onChange={(value) => setCustomValue('bathroomCount', value)}
+        />
       </div>
     );
   }
